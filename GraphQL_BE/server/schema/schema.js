@@ -48,7 +48,7 @@ const HobbyType = new GraphQLObjectType({
         user: {
             type: UserType,
             resolve(parent, args){
-                return _.find(usersData, {id: parent.userId})
+                return User.findById(parent.userId);
             }
         }
     }),
@@ -63,7 +63,7 @@ const PostType = new GraphQLObjectType({
         user:{
             type: UserType,
             resolve(parent, args){
-                return _.find(usersData, {id: parent.userId});
+                return User.findById(parent.userId);
             }
         }
     }),
@@ -90,7 +90,7 @@ const RootQuery = new GraphQLObjectType({
         users: {
             type: new GraphQLList(UserType),
             resolve(parent, args){
-                return usersData;    
+                return User.find({});
             } 
         },
         hobby: {
@@ -103,13 +103,13 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args){
                 // We resolve with data get and return data from a data source
                 // parent is the UserType
-                return _.find(hobbyData, {id: args.id});
+                return Hobby.findById(args.id);
             },
         },
         hobbies: {
             type: new GraphQLList(HobbyType),
             resolve(parent, args){
-                return Hobby.find({userId: parent.id});
+                return Hobby.find();
             } 
         },
         post: {
@@ -122,13 +122,13 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args){
                 // We resolve with data get and return data from a data source
                 // parent is the UserType
-                return _.find(postData, {id: args.id});
+                return Post.findById(args.id);
             },
         },
         posts: {
             type: new GraphQLList(PostType),
             resolve(parent, args){
-                return Post.find({userId: parent.id});
+                return Post.find({});
             } 
         },
     },
