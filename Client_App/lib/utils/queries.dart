@@ -36,6 +36,14 @@ class Queries {
       }   
     }
   ''';
+
+  static const String removeUser = '''
+         mutation RemoveUser(\$id: String!) {
+           RemoveUser(id: \$id){
+             name
+               }
+           }
+        ''';
 }
 
 String insertPost() {
@@ -58,16 +66,6 @@ String insertHobby() {
       }   
     }
     """;
-}
-
-String removeUser() {
-  return """
-         mutation RemoveUser(\$id: String!) {
-           RemoveUser(id: \$id){
-             name
-               }   
-           }
-        """;
 }
 
 String removePosts() {

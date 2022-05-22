@@ -81,12 +81,24 @@ class _UsersWidgetState extends State<UsersWidget> {
                               },
                               icon: const Icon(Icons.edit, color: Colors.grey),
                             ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.grey,
+                            Mutation(
+                              options: MutationOptions(
+                                document: gql(Queries.removeUser),
+                                onCompleted: (data) {
+                                  refetch!();
+                                },
                               ),
+                              builder: (runMutation, result) {
+                                return IconButton(
+                                  onPressed: () {
+                                    runMutation({'id': user['id']});
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.grey,
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
