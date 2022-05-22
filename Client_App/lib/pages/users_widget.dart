@@ -1,3 +1,4 @@
+import 'package:client_app/pages/user_page.dart';
 import 'package:client_app/utils/queries.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -14,7 +15,10 @@ class _UsersWidgetState extends State<UsersWidget> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Query(
-      options: QueryOptions(document: gql(Queries.getUsersQuery)),
+      options: QueryOptions(
+        document: gql(Queries.getUsersQuery),
+        fetchPolicy: FetchPolicy.noCache,
+      ),
       builder: (result, {fetchMore, refetch}) {
         if (result.isLoading) {
           return const Center(
@@ -66,7 +70,15 @@ class _UsersWidgetState extends State<UsersWidget> {
                             ),
                             const Expanded(child: SizedBox.shrink()),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => UserPage.edit(
+                                      user: user,
+                                    ),
+                                  ),
+                                );
+                              },
                               icon: const Icon(Icons.edit, color: Colors.grey),
                             ),
                             IconButton(
