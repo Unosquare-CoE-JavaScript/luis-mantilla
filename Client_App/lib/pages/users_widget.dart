@@ -102,20 +102,6 @@ class _UsersWidgetState extends State<UsersWidget> {
                                 builder: (runMutation, result) {
                                   return IconButton(
                                     onPressed: () {
-                                      final postIds = user['posts']
-                                          .map((data) => data['id'])
-                                          .toList();
-                                      final removePostsMutation = useMutation(
-                                        MutationOptions(
-                                          document: gql(Queries.removePosts),
-                                        ),
-                                      );
-                                      removePostsMutation
-                                          .runMutation({'ids': postIds});
-                                      final hobbies = user['posts']
-                                          .map((data) => data['id'])
-                                          .toList();
-
                                       runMutation({'id': user['id']});
                                     },
                                     icon: const Icon(

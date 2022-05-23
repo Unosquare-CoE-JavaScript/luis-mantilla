@@ -197,6 +197,24 @@ class _PostsList extends StatelessWidget {
                   },
                   title: Text('Post ${index + 1}'),
                   subtitle: Text(post['comment']),
+                  trailing: Mutation(
+                    options: MutationOptions(
+                      document: gql(Queries.removePost),
+                      onCompleted: (data) {
+                        refetch!();
+                      },
+                    ),
+                    builder: (runMutation, result) {
+                      return IconButton(
+                        onPressed: () {
+                          runMutation({'id': post['id']});
+                        },
+                        icon: const Icon(
+                          Icons.delete,
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             );
@@ -254,9 +272,23 @@ class _HobbiesList extends StatelessWidget {
                   },
                   title: Text(hobby['title']),
                   subtitle: Text(hobby['description']),
-                  trailing: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.delete),
+                  trailing: Mutation(
+                    options: MutationOptions(
+                      document: gql(Queries.removeHobby),
+                      onCompleted: (data) {
+                        refetch!();
+                      },
+                    ),
+                    builder: (runMutation, result) {
+                      return IconButton(
+                        onPressed: () {
+                          runMutation({'id': hobby['id']});
+                        },
+                        icon: const Icon(
+                          Icons.delete,
+                        ),
+                      );
+                    },
                   ),
                 );
               },

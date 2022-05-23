@@ -85,6 +85,14 @@ class Queries {
     }
     ''';
 
+  static const String removePost = '''
+    mutation RemovePost(\$id: String!) {
+      RemovePost(id: \$id){
+        comment
+          }
+      }
+  ''';
+
   static const String insertHobby = '''
     mutation CreateHobby(\$title: String!, \$description: String!, \$userId: ID!) {
       CreateHobby(title: \$title, description: \$description, userId: \$userId){
@@ -101,4 +109,12 @@ class Queries {
       }
     }
     ''';
+
+  static const String removeHobby = '''
+    mutation RemoveHobby(\$id: String!) {
+      RemoveHobby(id: \$id){
+        title
+          }
+      }
+  ''';
 }
