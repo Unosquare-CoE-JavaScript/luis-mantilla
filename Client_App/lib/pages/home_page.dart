@@ -1,4 +1,4 @@
-import 'package:client_app/pages/user_page.dart';
+import 'package:client_app/pages/user_form_page.dart';
 import 'package:client_app/pages/users_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const UserPage(),
+              builder: (context) => const UserFormPage(),
             ),
           );
         },

@@ -6,18 +6,9 @@ class Queries {
         id
         profession
         age
-        posts{
-          id
-          comment
-        }
-        hobbies{
-          id
-          title
-          description
-        }
       }
     }
-''';
+  ''';
 
   static const String insertUser = ''' 
    mutation CreateUser(\$name: String!, \$age: Int!, \$profession: String!){
@@ -44,47 +35,70 @@ class Queries {
                }
            }
         ''';
-}
 
-String insertPost() {
-  return """
-    mutation CreatePost(\$comment: String!, \$userId: String!) {
+  static const String removePosts = '''
+    mutation RemovePosts(\$ids: [String]) {
+      RemovePosts(ids: \$ids){
+      }   
+    }
+  ''';
+
+  static const String getPosts = '''
+    query User(\$id: ID!){
+      user(id: \$id){
+        id
+        posts{
+          id
+          comment
+        }
+      }
+    }
+  ''';
+
+  static const String getHobbies = '''
+    query Hobbies(\$id: ID!){
+      user(id: \$id){
+        id
+        hobbies{
+          id
+          title
+          description
+        }
+      }
+    }
+  ''';
+
+  static const String insertPost = '''
+    mutation CreatePost(\$comment: String!, \$userId: ID!) {
       CreatePost(comment: \$comment, userId: \$userId){
          id
          comment
       }   
     }
-    """;
-}
+    ''';
 
-String insertHobby() {
-  return """
-    mutation CreateHobby(\$title: String!, \$description: String!, \$userId: String!) {
+  static const String updatePost = '''
+    mutation UpdatePost(\$id: String!, \$comment: String!) {
+      UpdatePost(id: \$id, comment: \$comment){
+         comment
+      }   
+    }
+    ''';
+
+  static const String insertHobby = '''
+    mutation CreateHobby(\$title: String!, \$description: String!, \$userId: ID!) {
       CreateHobby(title: \$title, description: \$description, userId: \$userId){
          id
          title
       }   
     }
-    """;
-}
+    ''';
 
-String removePosts() {
-  return """ 
-    mutation RemovePosts(\$ids: [String]) {
-      RemovePosts(ids: \$ids){
-         
-      }   
+  static const String updateHobby = '''
+    mutation UpdateHobby(\$id: String!, \$title: String!, \$description: String!) {
+      UpdateHobby(id: \$id, title: \$title, description: \$description){
+         title
+      }
     }
-    """;
-}
-
-String removeHobbies() {
-  return """
-    mutation RemoveHobbies(\$ids: [String]) {
-      RemoveHobbies(ids: \$ids){
-      
-         
-      }   
-    }
-     """;
+    ''';
 }

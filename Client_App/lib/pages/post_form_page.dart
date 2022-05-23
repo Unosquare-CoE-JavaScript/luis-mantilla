@@ -1,42 +1,42 @@
-import 'package:client_app/pages/home_page.dart';
 import 'package:client_app/utils/queries.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class UserPage extends StatefulWidget {
-  const UserPage({
+class PostFormPage extends StatefulWidget {
+  const PostFormPage({
     Key? key,
-    this.user,
+    required this.userId,
+    this.post,
     this.isEditing = false,
   }) : super(key: key);
 
-  const UserPage.edit({
+  const PostFormPage.edit({
     Key? key,
-    required this.user,
+    this.userId,
+    required this.post,
     this.isEditing = true,
   }) : super(key: key);
 
-  final dynamic user;
+  final dynamic post;
+  final String? userId;
   final bool isEditing;
 
   @override
-  State<UserPage> createState() => _UserPageState();
+  State<PostFormPage> createState() => _PostFormPageState();
 }
 
-class _UserPageState extends State<UserPage> {
+class _PostFormPageState extends State<PostFormPage> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _professionController = TextEditingController();
-  final _ageController = TextEditingController();
+  final _commentController = TextEditingController();
+  final _descriptionController = TextEditingController();
+
   bool isSaving = false;
 
   @override
   void initState() {
     super.initState();
     if (widget.isEditing) {
-      _nameController.text = widget.user['name'];
-      _professionController.text = widget.user['profession'];
-      _ageController.text = widget.user['age'].toString();
+      _commentController.text = widget.post['comment'];
     }
   }
 
@@ -46,14 +46,14 @@ class _UserPageState extends State<UserPage> {
     return Scaffold(
       appBar: AppBar(
         title:
-            widget.isEditing ? const Text('Edit User') : const Text('New User'),
+            widget.isEditing ? const Text('Edit Post') : const Text('New Post'),
       ),
       body: SingleChildScrollView(
         child: Mutation(
           options: MutationOptions(
             document: widget.isEditing
-                ? gql(Queries.updateUser)
-                : gql(Queries.insertUser),
+                ? gql(Queries.updatePost)
+                : gql(Queries.insertPost),
             fetchPolicy: FetchPolicy.noCache,
             onCompleted: (data) {
               setState(() {
@@ -61,18 +61,12 @@ class _UserPageState extends State<UserPage> {
               });
               var snackBar = SnackBar(
                 content: widget.isEditing
-                    ? const Text('The user was updated successfully!')
-                    : const Text('The user was created successfully!'),
+                    ? const Text('The post was updated successfully!')
+                    : const Text('The post was created successfully!'),
               );
 
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomePage(),
-                ),
-                (route) => false,
-              );
+              Navigator.of(context).pop(true);
             },
           ),
           builder: (runMutation, result) {
@@ -82,51 +76,19 @@ class _UserPageState extends State<UserPage> {
                 padding: const EdgeInsets.all(12),
                 child: Column(children: [
                   TextFormField(
-                    controller: _nameController,
+                    controller: _commentController,
                     decoration: const InputDecoration(
-                      label: Text('Name'),
+                      label: Text('Comment'),
                       border: OutlineInputBorder(borderSide: BorderSide()),
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Name cannot be empty';
+                        return 'Comment cannot be empty';
                       } else {
                         return null;
                       }
                     },
                     keyboardType: TextInputType.text,
-                  ),
-                  separator,
-                  TextFormField(
-                    controller: _professionController,
-                    decoration: const InputDecoration(
-                      label: Text('Profession'),
-                      border: OutlineInputBorder(borderSide: BorderSide()),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Profession cannot be empty';
-                      } else {
-                        return null;
-                      }
-                    },
-                    keyboardType: TextInputType.text,
-                  ),
-                  separator,
-                  TextFormField(
-                    controller: _ageController,
-                    decoration: const InputDecoration(
-                      label: Text('Age'),
-                      border: OutlineInputBorder(borderSide: BorderSide()),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Age cannot be empty';
-                      } else {
-                        return null;
-                      }
-                    },
-                    keyboardType: TextInputType.number,
                   ),
                   separator,
                   isSaving
@@ -139,10 +101,10 @@ class _UserPageState extends State<UserPage> {
                               });
                               runMutation({
                                 'id':
-                                    widget.isEditing ? widget.user['id'] : null,
-                                'name': _nameController.text.trim(),
-                                'profession': _professionController.text.trim(),
-                                'age': int.parse(_ageController.text.trim()),
+                                    widget.isEditing ? widget.post['id'] : null,
+                                'comment': _commentController.text.trim(),
+                                'userId':
+                                    !widget.isEditing ? widget.userId : null,
                               });
                             }
                           },
