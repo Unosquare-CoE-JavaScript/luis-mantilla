@@ -63,3 +63,9 @@ query{
 You can check for more mutations in other objects in the Lodash documentation provided in the right panel of the app.
 
 Also the app is published in Heroku in the next url: [https://graphql-flutter-course-coe.herokuapp.com/graphql](https://graphql-flutter-course-coe.herokuapp.com/graphql)
+
+## Client App
+
+The client app was build using Flutter and the package `graphql_flutter`
+
+![](cliente_app_flutter.gif)
